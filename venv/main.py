@@ -21,7 +21,8 @@ def check_func_in_cool_module():
     reload(cool_module)
 
 
-def refactor_name_in_module(old_name, new_name):
+def refactor_name_in_module(old_name: 'Name to be replaced', new_name: 'New name') \
+        -> 'Refactored names':
     file = open(r'cool_module.py', 'r')
     contents = file.read()
     file.close()
@@ -33,8 +34,11 @@ def refactor_name_in_module(old_name, new_name):
     reload(cool_module)
 
 
+print(refactor_name_in_module.__annotations__)
+
+
 def change_line_in_module(line_no, replace_with):
-    file = open(r'cool_module.py', 'r+')
+    file = open(r'cool_module.py', 'r')
     contents = file.readlines()
     file.close()
 
@@ -48,7 +52,7 @@ def change_line_in_module(line_no, replace_with):
 
 
 def insert_line_to_module(line_no, insert_line):
-    file = open(r'cool_module.py', 'r+')
+    file = open(r'cool_module.py', 'r')
     contents = file.readlines()
     file.close()
 
@@ -62,19 +66,19 @@ def insert_line_to_module(line_no, insert_line):
 
 
 def insert_new_func_to_module():
-    func = "\n\ndef new_func(a, b):\n    return a + b\n"
-    insert_line_to_module(2, func)
+    func_text = "\n\ndef new_func(a, b):\n    return a + b\n"
+    insert_line_to_module(2, func_text)
 
     print(cool_module.new_func(23, 23))
 
 
 def insert_new_func_to_this_module():
-    file = open(r'main.py', 'r+')
+    file = open(r'main.py', 'r')
     contents = file.readlines()
     file.close()
 
-    func = "\n\ndef new_func(a, b):\n    return a + b\n"
-    contents.insert(2, func)
+    func_text = "\n\ndef new_func(a, b):\n    return a + b\n"
+    contents.insert(187, func_text)
 
     file = open(r'main.py', 'w')
     contents = "".join(contents)
@@ -83,6 +87,17 @@ def insert_new_func_to_this_module():
 
 
 # --------------------------------------------------------------------------
+# Immutable: numbers, strings, tuples, frozen sets
+# Mutable: lists, dictionaries, sets
+
+# func(values, names=value, *sequences, **dicts)
+# func(names, names=value, *names, *, names=value, **names)
+
+# filter(function, iterable)
+# zip(*iterables)
+# map(function, *iterables)
+# if 't' in n_sum.__dir__(): return n_sum.t
+# for x ... : if not isinstance(x, list)
 
 def list_cool_module_attributes():
     print(dir(cool_module))
@@ -120,10 +135,6 @@ def files():
     file.close()  # how are yo23
 
 
-# Immutable: numbers, strings, tuples, frozen sets
-# Mutable: lists, dictionaries, sets
-
-
 def lines_to_lists_of_words():
     file = open(r'cool_module.py')
     for line in file:
@@ -149,13 +160,13 @@ def iterators():
     print(all(a))
 
 
-b = 1
+bi = 1
 
 
-def func():
-    global b
-    b = 2
-    t = 5 + b
+def globals_non_locals():
+    global bi
+    bi = 2
+    t = 5 + bi
 
     def int_func():
         k = 5
@@ -166,7 +177,7 @@ def func():
     return int_func() + t
 
 
-print(func())  # 29
+# print(globals_non_locals())  # 29
 
 
 def numbers(a, *some_numbers):
@@ -175,5 +186,7 @@ def numbers(a, *some_numbers):
         sun += n
     print(sun)
 
-# func(values, names=value, *sequences, **dicts)
-# func(names, names=value, *names, *, names=value, **names)
+
+def generators():
+    a = [1, 'a', 3, (1, 2)]
+    print([x * 2 for x in a if x == 3 or isinstance(x, tuple)])
