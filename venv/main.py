@@ -122,3 +122,58 @@ def files():
 
 # Immutable: numbers, strings, tuples, frozen sets
 # Mutable: lists, dictionaries, sets
+
+
+def lines_to_lists_of_words():
+    file = open(r'cool_module.py')
+    for line in file:
+        print(line.split(), end=' ')
+    file.close()
+
+
+def iterators():
+    a = list(range(1, 5, 2))
+    iterator = iter(a)
+    print(next(iterator))
+    print(iterator.__next__())
+
+    file = open(r'file.txt')
+    print(file.__next__(), end='')
+    print(next(file), end='')
+    file.close()
+
+    b = [1, 2.4, 'huh', {1, 2}, [23]]
+    print(list(enumerate(b, 23)))  # [(23, 1), (24, 2.4), (25, 'huh'), (26, {1, 2}), (27, [23])]
+
+    a = [1, 2.8, 4, 0, 9]
+    print(all(a))
+
+
+b = 1
+
+
+def func():
+    global b
+    b = 2
+    t = 5 + b
+
+    def int_func():
+        k = 5
+        nonlocal t
+        t += 5
+        return t + k
+
+    return int_func() + t
+
+
+print(func())  # 29
+
+
+def numbers(a, *some_numbers):
+    sun = a
+    for n in some_numbers:
+        sun += n
+    print(sun)
+
+# func(values, names=value, *sequences, **dicts)
+# func(names, names=value, *names, *, names=value, **names)
